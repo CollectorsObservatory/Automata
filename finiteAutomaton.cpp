@@ -20,30 +20,29 @@ void automata_ift3101(string word){
             case State_1:
             if (c == 'a'){
                 currentState = State_2;
-            }if (c =='b'){
+            }else if (c =='b'){
                 currentState = State_3;
             }break;
 
             case State_2:
             if (c == 'a'){
                 currentState = State_Final;
-            }if (c =='b'){
+            }else if (c =='b'){
                 currentState = State_3;
             }break;
 
             case State_3:
             if (c == 'a'){
                 currentState = State_2;
-            }if (c =='b'){
+            }else if (c =='b'){
                 currentState = State_Final;
             }break;
 
             case State_Final:
             if (c == 'a' ||c =='b'){
                 currentState = State_Final;
-                //break;
+                
             }
-            //default: cout <<"Word not accepted" << endl;
         }
     }
     if (currentState == State_Final) {

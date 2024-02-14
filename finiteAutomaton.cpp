@@ -12,7 +12,7 @@ enum STATES {
 
 };
 
-void automata_ift3101(string word){
+void automaton_ift3101(string word){
     STATES currentState = State_1;
     for(char &c : word){
         switch (currentState)

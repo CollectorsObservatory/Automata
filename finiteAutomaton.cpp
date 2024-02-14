@@ -3,7 +3,7 @@
 using namespace std; 
 
 /* Implenting a finite automata that managea a regular language*/
-/**/
+
 enum STATES {
     State_1,
     State_2,

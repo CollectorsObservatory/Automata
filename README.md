@@ -19,9 +19,4 @@ The code provides two main functions:
 
 - `double_pushdown_automaton`: Simulates a double stacked pushdown automaton for the language `a^nb^nc^n`, where `n` is a positive integer. It verifies if the input word correctly follows the pattern where the number of `a`s is equal to the number of `b`s, which in turn is equal to the number of `c`s.
 
-## Compilation
 
-To compile the project, ensure you have a C++ compiler installed and use the following command:
-
-```bash
-g++ -o contextFreeAlgorithms main.cpp

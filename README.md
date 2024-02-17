@@ -4,10 +4,8 @@ This project contains the implementation of a finite automaton and a pushdown au
 
 ## Compilation
 
-To compile this project, ensure you have a C++ compiler installed and run the following command:
+To compile this project, ensure you have a C++ compiler installed 
 
-```bash
-g++ -o automaton main.cpp
 
 # Context-Free Language Algorithms
 

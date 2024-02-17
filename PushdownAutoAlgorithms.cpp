@@ -1,3 +1,6 @@
+/**
+  *@brief Implementing algorithms for different context free languages
+ */
 #include <iostream> 
 #include <vector>
 #include <cctype>

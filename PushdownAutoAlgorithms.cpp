@@ -1,9 +1,10 @@
 /**
-  *@brief Implementing algorithms for different context free languages
+  *@brief Implemnting algorithms for different context free languages
  */
 #include <iostream> 
 #include <vector>
 #include <cctype>
+#include <unordered_set>
 
 using namespace std ;
 
@@ -69,6 +70,29 @@ string double_pushdown_automaton(string word){
 
 }
 
+/**
+ * /brief function for 0^n1^n language where the order is not important
+ * but we need to check that regardless of the word , we must find the same 
+ * number of 0s and 1s
+ * basically simulating a Turing Machine
+ */
+
+string TuringMachine_version1(string word){
+    string t = "true";
+    string f = "false";
+    int one_count = 0;
+    int zero_count = 0;
+    for (int i = 0; i<word.size(); i++){
+        if(word[i] =='0') {zero_count ++;}
+        else if(word[i] =='1') {one_count ++;}
+        else{return f;}
+        
+    }
+    if (zero_count == one_count) {return t;}
+    else{return f;}
+}
+
+
 
 
 
@@ -77,9 +101,12 @@ int main(){
     while (true) {
         cout << "Enter word(a^nb^n c^n format): " << endl;
         getline(cin, user_input);
-        cout << double_pushdown_automaton(user_input)<<endl;
+        //cout << double_pushdown_automaton(user_input)<<endl;
+        cout << TuringMachine_version1(user_input) <<endl;
+  
 
     }
+
 
 
 

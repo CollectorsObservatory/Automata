@@ -22,10 +22,12 @@ enum STATES3101 {
 
 
 };
+
 /**
  * @brief Simulates a finite automaton that manages a regular language.
  * @param word The word to be processed by the automaton.
  */
+
 void automaton_ift3101(string word){
     STATES3101 currentState = State_1;
     for(char &c : word){
@@ -80,21 +82,17 @@ enum Pushdown_States{
 /**
  * @brief Simulates a pushdown automaton for a specific context-free language.
  * @param word The word to be processed by the automaton, containing only '0's and '1's.
- * @return A string "true" if the word is accepted, otherwise "false".
+ * @return bool True if condition is true
  */
-string pushdown_automaton(string word){
+bool pushdown_automaton(string word){
     
-    string t ="true" ;
-    string f = "false";
+
 
     Pushdown_States currentState = S_1;
 
     vector<char>stack;
     stack.push_back('$');
-    for(int i=0;i<word.size();i++){
-        if(!(word[i] == '0' || word[i] == '1')){return f;}
-    }
-
+   
 
     for(char& c : word){
         switch(currentState){
@@ -114,7 +112,10 @@ string pushdown_automaton(string word){
             }else if(c=='1' && !stack.empty() && stack.back()!='$'){
                 stack.pop_back();
 
-            }break;
+            }else {
+                return false;
+            }
+            break;
 
             case Final:
             break;
@@ -123,24 +124,60 @@ string pushdown_automaton(string word){
     }
     if(stack.back()=='$'){
         currentState = Final;
-        return t;
+        return true;
     }else{
-        return f;
+        return false;
     }
 
 }
+/**
+ * @brief Simulates a double pushdown automaton for a specific context-free language.
+ * @param word The word to be processed by the automaton, containing a mix of a and b
+ * @return true if the mix  has the same number of as and bs
+ */
+bool double_pushdown_automaton(string word){
+
+    vector<char> alpha ;
+    vector<char> beta;
+    enum States{
+        State1,
+        State_final
+    };
+    States currentState = State1;
 
 
+    for (char c:word) {
+        switch(currentState) {
+            case State1:
+            if (c=='a') {
+                alpha.push_back('a');
+            }else if(c== 'b') {
+                beta.push_back('b');
+            }break;
+            case State_final:
+            break;
+        }
+
+
+        
+    }
+    if (alpha.size()==beta.size()) {currentState = State_final; return true;}
+    else {return false;}
+
+      
+
+   
+}
 
 int main(){
     string input ;
     while(input != "X"){
         cout<<"Enter word: " <<endl;
         getline(cin,input);
-        //automaton_ift3101(input) ;
+        cout <<pushdown_automaton(input)<<endl ;
        
        
-        cout << pushdown_automaton(input)<<endl;
+    
 
 
     }

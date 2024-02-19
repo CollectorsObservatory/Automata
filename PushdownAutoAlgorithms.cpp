@@ -5,6 +5,7 @@
 #include <vector>
 #include <cctype>
 #include <unordered_set>
+#include<array>
 
 using namespace std ;
 
@@ -14,23 +15,22 @@ using namespace std ;
  * basically simulating a pushdown automaton 
  */
 
-string pushdown_automaton(string word){
-    string t = "true";
-    string f = "false";
+bool pushdown_automaton(string word){
+
     vector<string> alpha ;
 
-    if (word[0] != 'a') {return f;}
+    if (word[0] != 'a') {return false;}
 
     for (int i=0; i< word.size()/2 ;i ++){
-        if (word[i] != 'a') {return f;}
+        if (word[i] != 'a') {return false;}
         if (word[i] =='a') {alpha.push_back("a");}
     }
     for (int j = word.size()/2; j<word.size();j++){
-        if (word[j] != 'b' || alpha.empty()) {return f;}
+        if (word[j] != 'b' || alpha.empty()) {return false;}
         if (word[j] =='b' && (!(alpha.empty()))) {alpha.pop_back();}
 
     }
-    return t;
+    return true;
 
 }
 
@@ -39,33 +39,34 @@ string pushdown_automaton(string word){
  * basically simulating a TM with a double stacked pushdown automaton 
  */
 
-string double_pushdown_automaton(string word){
-    string t = "true";
-    string f = "false";
+bool double_pushdown_automaton(string word){
+
 
     vector<string> alpha ;
     vector<string> beta;
 
-    if (word[0] != 'a') {return f;}
+    if (word[0] != 'a') {return false;}
+      for (int i =0; i<word.size(); i++) {if (!isalpha(word[i])) {return false;}}
 
+    
     for (int i=0; i< word.size()/3 ;i ++){
-        if (word[i] != 'a') {return f;}
+        if (word[i] != 'a') {return false;}
         if (word[i] =='a') {alpha.push_back("a");
         beta.push_back("a");}
     }
     for (int j = word.size()/3; j<2*(word.size())/3;j++){
-        if (word[j] != 'b' || alpha.empty()) {return f;}
+        if (word[j] != 'b' || alpha.empty()) {return false;}
         if (word[j] =='b' && (!(alpha.empty()))) {alpha.pop_back();}
 
     }
     for (int k =2*(word.size())/3 ; k<word.size();k++){
-        if (word[k] != 'c' || beta.empty()) {return f;}
+        if (word[k] != 'c' || beta.empty()) {return false;}
         if (word[k] =='c' && (!(beta.empty()))) {beta.pop_back();}
 
     }
 
 
-    return t;
+    return true;
 
 
 }
@@ -77,19 +78,18 @@ string double_pushdown_automaton(string word){
  * basically simulating a Turing Machine
  */
 
-string TuringMachine_version1(string word){
-    string t = "true";
-    string f = "false";
+bool TuringMachine_version1(string word){
+    
     int one_count = 0;
     int zero_count = 0;
     for (int i = 0; i<word.size(); i++){
         if(word[i] =='0') {zero_count ++;}
         else if(word[i] =='1') {one_count ++;}
-        else{return f;}
+        else{return false;}
         
     }
-    if (zero_count == one_count) {return t;}
-    else{return f;}
+    if (zero_count == one_count) {return true;}
+    else{return false;}
 }
 
 
@@ -98,14 +98,15 @@ string TuringMachine_version1(string word){
 
 int main(){
     string user_input ; 
+    
     while (true) {
         cout << "Enter word(a^nb^n c^n format): " << endl;
         getline(cin, user_input);
-        //cout << double_pushdown_automaton(user_input)<<endl;
-        cout << TuringMachine_version1(user_input) <<endl;
+ 
+        cout << double_pushdown_automaton(user_input) <<endl;
   
 
-    }
+    } 
 
 
 

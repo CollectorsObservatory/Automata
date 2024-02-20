@@ -1,6 +1,6 @@
 /**
- * @file finiteAutomaton.cpp
- * @brief Implements a finite automaton and a pushdown automaton.
+ * @file State diagrams.cpp
+ * @brief Implements finite automatons and  pushdown automatons.
  */
 
 #include <iostream> 
@@ -82,7 +82,7 @@ enum Pushdown_States{
 /**
  * @brief Simulates a pushdown automaton for a specific context-free language.
  * @param word The word to be processed by the automaton, containing only '0's and '1's.
- * @return bool True if condition is true
+ * @return A string "true" if the word is accepted, otherwise "false".
  */
 bool pushdown_automaton(string word){
     
@@ -130,11 +130,7 @@ bool pushdown_automaton(string word){
     }
 
 }
-/**
- * @brief Simulates a double pushdown automaton for a specific context-free language.
- * @param word The word to be processed by the automaton, containing a mix of a and b
- * @return true if the mix  has the same number of as and bs
- */
+
 bool double_pushdown_automaton(string word){
 
     vector<char> alpha ;
@@ -163,12 +159,77 @@ bool double_pushdown_automaton(string word){
     }
     if (alpha.size()==beta.size()) {currentState = State_final; return true;}
     else {return false;}
-
-      
-
-   
 }
+/**
+ * @brief Verifies if a given string of parentheses is properly nested.
+ * 
+ * This function simulates a pushdown automaton to check whether a string composed
+ * exclusively of parentheses '(' and ')' is correctly nested. The automaton uses a stack
+ * to track the opening parentheses and ensures each opening parenthesis is properly closed
+ * in the correct order. Input containing any characters other than '(' and ')' is immediately
+ * rejected.
+ * 
+ * @param word The string of parentheses to be checked.
+ * @return bool Returns true if the string is properly nested, false otherwise.
+ */
+bool pushdown(string word){
+  
+    enum States{
+        State_1,      // Initial state, expecting '(' or detecting unmatched ')'
+        State_2,      // State after popping a '(', expecting more ')' or '('
+        State_g,      // Garbage state (unnecessary for this simple logic but included for completeness)
+        State_final   // Accepting state (also not actively used because acceptance is determined by the stack being empty)
+    };
+    for(int i=0 ; i<word.size();i++){
+        if (word[i] != ')' && word[i] != '(') {return false;}
+    }
+    vector <char> stack; 
+    States currentState = State_1; 
+    for (char c: word) {
+        switch(currentState) {
+            case State_1:
+            if (c == '(') {
+                stack.push_back('x');
 
+            }else if(c == ')' && stack.empty()){
+                return false;
+                break;
+             
+            }else if(c == ')' && !stack.empty()){
+                stack.pop_back();
+                currentState=State_2;
+            }else {
+                currentState = State_g;
+            }break;
+
+            case State_2:
+            if (c=='(') {
+                stack.push_back('x');
+                currentState = State_1;
+            }else if(c == ')' && stack.back() =='x' ){
+                stack.pop_back();
+            }else {
+                currentState = State_g;
+            }break;
+
+            case State_g:
+            return false;
+            break;
+            break;
+            case State_final:
+            break;
+        }
+    }
+    if(stack.empty()){
+        currentState = State_final;
+        return true;
+    }else{
+        currentState = State_g;
+        return false;
+    }
+
+
+}
 int main(){
     string input ;
     while(input != "X"){

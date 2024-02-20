@@ -1,6 +1,6 @@
 /**
- * @file State diagrams.cpp
- * @brief Implements finite automatons and  pushdown automatons.
+ * @file finiteAutomaton.cpp
+ * @brief Implements a finite automaton and a pushdown automaton.
  */
 
 #include <iostream> 
@@ -184,6 +184,7 @@ bool pushdown(string word){
         if (word[i] != ')' && word[i] != '(') {return false;}
     }
     vector <char> stack; 
+    stack.push_back('#');
     States currentState = State_1; 
     for (char c: word) {
         switch(currentState) {
@@ -191,11 +192,11 @@ bool pushdown(string word){
             if (c == '(') {
                 stack.push_back('x');
 
-            }else if(c == ')' && stack.empty()){
+            }else if(c == ')' && stack.back()!='x'){
                 return false;
                 break;
              
-            }else if(c == ')' && !stack.empty()){
+            }else if(c == ')' && stack.back()=='x'){
                 stack.pop_back();
                 currentState=State_2;
             }else {
@@ -203,11 +204,15 @@ bool pushdown(string word){
             }break;
 
             case State_2:
-            if (c=='(') {
+            if(c == ')' && stack.back()=='x'){
+                stack.pop_back();
+            }
+            else if(c == ')' && stack.back() !='x'){
+                return false;
+                break;}
+            else if (c=='(') {
                 stack.push_back('x');
                 currentState = State_1;
-            }else if(c == ')' && stack.back() =='x' ){
-                stack.pop_back();
             }else {
                 currentState = State_g;
             }break;
@@ -220,7 +225,7 @@ bool pushdown(string word){
             break;
         }
     }
-    if(stack.empty()){
+    if(stack.back()=='#'){
         currentState = State_final;
         return true;
     }else{
@@ -235,7 +240,7 @@ int main(){
     while(input != "X"){
         cout<<"Enter word: " <<endl;
         getline(cin,input);
-        cout <<pushdown_automaton(input)<<endl ;
+        cout <<pushdown(input)<<endl ;
        
        
     

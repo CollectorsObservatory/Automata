@@ -235,12 +235,120 @@ bool pushdown(string word){
 
 
 }
+
+/**
+ * @brief Verifies if a given string of parentheses and brackets is properly nested.
+ * 
+ * This function extends the pushdown automaton concept to check whether a string composed
+ * exclusively of parentheses '(' and ')' and brackets '[' and ']' is correctly nested. It uses two stacks
+ * to track the opening and closing of both types of symbols, ensuring each opening symbol is properly closed
+ * in the correct order. Input containing any characters other than '(', ')', '[' and ']' is immediately
+ * rejected. The automaton transitions between two states based on the input symbol and the top of the stacks,
+ * ensuring the proper nesting of both parentheses and brackets independently.
+ * 
+ * @param word The string of parentheses and brackets to be checked.
+ * @return bool Returns true if the string is properly nested, false otherwise.
+ */
+
+bool pushdown_two(string word){
+  
+  
+    enum States{
+        State_1,      // Initial state, expecting '(' or detecting unmatched ')'
+        State_2,      // State after popping a '(', expecting more ')' or '('
+        State_g,      // Garbage state (unnecessary for this simple logic but included for completeness)
+        State_final   // Accepting state (also not actively used because acceptance is determined by the stack being empty)
+    };
+
+    for(int i=0 ; i<word.size();i++){
+        if (word[i] != ')' && word[i] != '(' &&
+            word[i] != '[' && word[i] !=']') {return false;}
+    }
+    vector <char> stack; 
+    vector <char> stack_two;
+
+    stack.push_back('#');
+    stack_two.push_back('$');
+
+    States currentState = State_1; 
+
+    for (char c: word) {
+        switch(currentState) {
+            case State_1:
+            if (c == '(') {
+                stack.push_back('x');
+            }else if (c == '['){
+                stack_two.push_back('x');
+            }
+            else if (c == ']' && stack_two.back()!='x') {
+                return false;
+                break;
+            }
+            else if(c == ']' && stack_two.back()=='x'){
+                stack_two.pop_back();
+                currentState=State_2;
+            }
+            else if(c == ')' && stack.back()!='x'){
+                return false;
+                break;
+             
+            }else if(c == ')' && stack.back()=='x'){
+                stack.pop_back();
+                currentState=State_2;
+            }else {
+                currentState = State_g;
+            }break;
+
+            case State_2:
+            if(c == ')' && stack.back()=='x'){
+                stack.pop_back();
+
+            }else if(c == ']' && stack_two.back()=='x'){
+                stack_two.pop_back();
+            }
+            else if(c == ')' && stack.back() !='x'){
+                return false;
+                break;}
+            else if(c == ']' && stack_two.back() !='x'){
+                return false;
+                break;}
+            else if (c=='(') {
+                stack.push_back('x');
+                currentState = State_1;
+            }else if(c=='['){
+                stack_two.push_back('x');
+                currentState = State_1;
+            }
+            else {
+                currentState = State_g;
+            }break;
+
+            case State_g:
+            return false;
+            break;
+            break;
+            case State_final:
+            break;
+        }
+    }
+    if(stack.back()=='#' && stack_two.back() =='$'){
+        stack.pop_back();
+        stack_two.pop_back();
+        currentState = State_final;
+        return true;
+    }else{
+        currentState = State_g;
+        return false;
+    }
+
+
+}
 int main(){
     string input ;
     while(input != "X"){
         cout<<"Enter word: " <<endl;
         getline(cin,input);
-        cout <<pushdown(input)<<endl ;
+        cout<<pushdown_two(input)<<endl;
        
        
     

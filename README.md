@@ -12,6 +12,19 @@ Included in this repository are implementations for algorithms simulating automa
 
 ## Overview of Functions
 
-- `pushdown_automaton`: This function simulates a pushdown automaton tailored for processing the language `a^nb^n`, where `n` represents a positive integer. It checks whether the input word matches the language criteria, specifically ensuring an equal number of `a`s followed by an equal number of `b`s.
+### `automaton_ift3101`
+Implements a finite automaton that manages a regular language. It transitions through predefined states based on the input characters, accepting or rejecting the word based on the defined language rules.
 
-- `double_pushdown_automaton`: Expanding on the concept, this function simulates a double stacked pushdown automaton for the language `a^nb^nc^n`. It assesses whether the input string follows the specified pattern, validating that the counts of `a`s, `b`s, and `c`s are equal, thus belonging to the intended context-free language.
+### `pushdown_automaton`
+Simulates a pushdown automaton tailored for processing the language `a^nb^n`, where `n` represents a positive integer. It checks whether the input word matches the language criteria, specifically ensuring an equal number of `a`s followed by an equal number of `b`s.
+
+### `double_pushdown_automaton`
+Expands on the pushdown automaton concept, simulating a double stacked pushdown automaton for the language `a^nb^nc^n`. It validates that the input string follows the specified pattern, with equal counts of `a`s, `b`s, and `c`s.
+
+### `pushdown`
+Verifies if a given string of parentheses is properly nested. This function uses a stack to track the opening and closing of parentheses, ensuring each is properly matched and in the correct order. It returns true if the string is properly nested, false otherwise.
+
+### `pushdown_two`
+Extends the pushdown automaton concept to check for the proper nesting of both parentheses `()` and brackets `[]`. It utilizes two separate stacks to track the opening and closing of these symbols, ensuring that each type is properly matched and nested. This function can handle mixed sequences of parentheses and brackets, returning true if the sequence is correctly nested.
+
+

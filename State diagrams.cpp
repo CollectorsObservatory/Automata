@@ -343,6 +343,146 @@ bool pushdown_two(string word){
 
 
 }
+bool pushdown_four(string word){
+  
+  
+    enum States{
+        State_1,      // Initial state, expecting '(' or detecting unmatched ')'
+        State_2,      // State after popping a '(', expecting more ')' or '('
+        State_g,      // Garbage state (unnecessary for this simple logic but included for completeness)
+        State_final   // Accepting state (also not actively used because acceptance is determined by the stack being empty)
+    };
+
+    for(int i=0 ; i<word.size();i++){
+        if (word[i] != ')' && word[i] != '(' &&
+            word[i] != '[' && word[i] !=']' &&
+            word[i] != '{' && word[i] !='}' &&
+            word[i] != '<' && word[i] != '>') {return false;}
+    }
+    vector <char> stack; 
+    vector <char> stack_two;
+    vector <char> stack_three; 
+    vector <char> stack_four; 
+
+    stack.push_back('#');
+    stack_two.push_back('$');
+    stack_three.push_back('%');
+    stack_four.push_back('*');
+
+
+    States currentState = State_1; 
+
+    for (char c: word) {
+        switch(currentState) {
+            case State_1:
+            if (c == '(') {
+                stack.push_back('x');
+
+            }
+            else if (c == '['){
+                stack_two.push_back('x');
+            }
+            else if (c == '{') {
+                stack_three.push_back('x');
+            }
+            else if (c == '<') {
+                stack_four.push_back('x');
+            }
+            else if (c == ']' && stack_two.back()!='x') {
+                return false;
+                break;
+            }
+            else if (c == '}' && stack_three.back()!='x') {
+                return false;
+                break;
+            }
+            else if (c == '>' && stack_four.back()!='x') {
+                return false;
+                break;
+            }
+            else if(c == ']' && stack_two.back()=='x'){
+                stack_two.pop_back();
+                currentState=State_2;
+            }
+            else if(c == '}' && stack_three.back()=='x'){
+                stack_three.pop_back();
+                currentState=State_2;
+            }
+            else if(c == '>' && stack_four.back()=='x'){
+                stack_four.pop_back();
+                currentState=State_2;
+            }
+            else if(c == ')' && stack.back()!='x'){
+                return false;
+                break;
+             
+            }else if(c == ')' && stack.back()=='x'){
+                stack.pop_back();
+                currentState=State_2;
+            }
+            else {
+                currentState = State_g;
+            }break;
+
+            case State_2:
+            if(c == ')' && stack.back()=='x'){
+                stack.pop_back();
+
+            }else if(c == ']' && stack_two.back()=='x'){
+                stack_two.pop_back();
+            }else if(c == '}' && stack_three.back()=='x'){
+                stack_three.pop_back();
+            }else if(c == '>' && stack_four.back()=='x'){
+                stack_four.pop_back();
+            }
+            else if(c == ')' && stack.back() !='x'){
+                return false;
+                break;}
+            else if(c == ']' && stack_two.back() !='x'){
+                return false;
+                break;}
+            else if(c == '>' && stack_four.back() !='x'){
+                return false;
+                break;}
+            else if(c == '}' && stack_three.back() !='x'){
+                return false;
+                break;}
+            else if (c=='(') {
+                stack.push_back('x');
+                currentState = State_1;
+            }else if(c=='['){
+                stack_two.push_back('x');
+                currentState = State_1;
+            }else if(c=='{'){
+                stack_three.push_back('x');
+                currentState = State_1;
+            }else if(c=='<'){
+                stack_four.push_back('x');
+                currentState = State_1;
+            }
+            else {
+                currentState = State_g;
+            }break;
+
+            case State_g:
+            return false;
+            break;
+            break;
+            case State_final:
+            break;
+        }
+    }
+    if(stack.back()=='#' && stack_two.back() =='$' && stack_three.back() == '%' && stack_four.back() == '*'){
+        stack.pop_back();
+        stack_two.pop_back();
+        stack_three.pop_back();
+        currentState = State_final;
+        return true;
+    }else{
+        currentState = State_g;
+        return false;
+    }
+}
 int main(){
     string input ;
     while(input != "X"){
